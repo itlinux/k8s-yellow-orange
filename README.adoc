@@ -1,0 +1,1 @@
+= For Avi K8s playbooks to get familiar with. It has annotations and ssl settings on the yellow and port 80 nly on the orange. 
