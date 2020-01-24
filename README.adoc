@@ -1,4 +1,4 @@
-= For Avi K8s playbooks to get familiar with. It has annotations and ssl settings on the yellow and port 80 nly on the orange.
+= For Avi K8s playbooks to get familiar with. It has annotations and ssl settings on the yellow and port 80 only on the orange.
 
 == Steps
 download the git repo then cd into the repo directory. This requires Avi Load Balancer already been configured with K8s.
