@@ -1,1 +1,76 @@
-= For Avi K8s playbooks to get familiar with. It has annotations and ssl settings on the yellow and port 80 nly on the orange. 
+= For Avi K8s playbooks to get familiar with. It has annotations and ssl settings on the yellow and port 80 nly on the orange.
+
+== Steps
+download the git repo then cd into the repo directory. This requires Avi Load Balancer already been configured with K8s.
+then do the following:
+
+----
+kubectl create -f yellow.yaml
+----
+
+then create the services
+
+----
+kubectl create -f yellow_svc.yaml
+----
+
+Check the endpoints and you should see something like this
+
+----
+ kubectl get endpoints
+NAME            ENDPOINTS                                 AGE
+apache-orange   10.233.105.50:80,10.233.96.65:80          8h
+apache-yellow   10.233.105.51:80,10.233.96.66:80          48m
+----
+
+To check if the annotations worked execute the following
+
+----
+[root@node1 k8s]# kubectl describe svc apache-orange
+Name:                     apache-orange
+Namespace:                default
+Labels:                   <none>
+Annotations:              avi_proxy:
+                            {
+                              "virtualservice":{
+                                "analytics_policy":{
+                                  "client_insights":"NO_INSIGHTS",
+                                  "metrics_realtime_update":{
+                                    "duration":0,
+                                    "enabled":true
+                                  },
+                                  "full_client_logs":{
+                                    "duration":0,
+                                    "enabled":true
+                                  }
+                                }
+                              },
+                              "pool":{
+                                "analytics_policy":{
+                                  "enable_realtime_metrics":true
+                                }
+                              }
+                            }
+Selector:                 app=apache-orange
+Type:                     LoadBalancer
+IP:                       10.233.52.184
+Port:                     http  80/TCP
+TargetPort:               80/TCP
+NodePort:                 http  30816/TCP
+Endpoints:                10.233.105.50:80,10.233.96.65:80
+Session Affinity:         None
+External Traffic Policy:  Cluster
+Events:                   <none>
+[root@node1 k8s]#
+----
+
+To check the pods
+
+----
+kubectl get pods
+----
+
+
+Avi controller will see the new built service in the default tenant
+
+
