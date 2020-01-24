@@ -73,4 +73,4 @@ kubectl get pods
 
 Avi controller will see the new built service in the default tenant
 
-
+NOTE: To add the orange just run the same commands with the other playbooks. The process is the same. 
