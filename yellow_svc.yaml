@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: apache-yellow
+  annotations:
+   avi_proxy: '{ "virtualservice":{
+                    "east_west_placement":false,
+                    "auto_allocate_ip": true,
+                    "application_profile_ref":"/api/applicationprofile?name=System-Secure-HTTP",
+                    "ssl_profile_ref":"/api/sslprofile/?name=System-Standard",
+                    "analytics_policy":{
+                        "client_insights":"NO_INSIGHTS",
+                        "metrics_realtime_update":{
+                            "duration":0,
+                            "enabled":true
+                        },
+                        "full_client_logs":{
+                            "duration":0,
+                            "enabled":true
+                        }
+                    },
+                    "services":[
+                        {
+                            "enable_ssl":true,
+                            "port":443
+                        }
+                    ],
+                    "ssl_key_and_certificate_refs":[
+                        "/api/sslkeyandcertificate?name=System-Default-Cert",
+                        "/api/sslkeyandcertificate?name=System-Default-Cert-EC"
+                    ]
+                },
+                "pool":{
+                    "lb_algorithm":"LB_ALGORITHM_ROUND_ROBIN"
+                }
+              }'
+spec:
+  type: LoadBalancer
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80
+    protocol: TCP
+  selector:
+    app: apache-yellow

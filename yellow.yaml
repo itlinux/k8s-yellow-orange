@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-yellow
+  labels:
+    app: apache-yellow
+spec:
+  selector:
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: apache-yellow
+  template:
+    metadata:
+      labels:
+        app: apache-yellow
+    spec:
+      containers:
+      - name: apache-yellow
+        image: itlinux/httpd-yellow
+        ports:
+        - containerPort: 80

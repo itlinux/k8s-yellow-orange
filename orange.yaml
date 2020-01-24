@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-orange
+  labels:
+    app: apache-orange
+spec:
+  selector:
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: apache-orange
+  template:
+    metadata:
+      labels:
+        app: apache-orange
+    spec:
+      containers:
+      - name: apache-orange
+        image: itlinux/httpd-orange
+        ports:
+        - containerPort: 80
