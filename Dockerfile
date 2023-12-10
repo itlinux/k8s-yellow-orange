@@ -6,7 +6,7 @@ RUN apt update -y
 RUN apt install -y apache2  
 
 RUN echo "Installing web server"
-RUN echo "Welcome to my container" >/usr/local/apache2/htdocs/index.html
+RUN echo "Welcome to my container" >/var/www/html/index.html
 
 EXPOSE 8081
 ENTRYPOINT apachectl "-DFOREGROUND"
