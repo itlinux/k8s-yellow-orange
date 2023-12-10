@@ -1,14 +1,12 @@
-FROM rockylinux:latest
+FROM ubuntu:latest
 MAINTAINER remo at mattei dot org
-LABEL version="1.0" description="This is a sample apache build for RockyLinux"
+LABEL version="1.0" description="This is a sample apache build for Ubuntu"
 
-RUN yum update -y
-RUN yum install -y httpd 
-RUN yum install -y net-tools vim 
-RUN yum clean all
+RUN apt update -y
+RUN apt install -y apache2  
 
-RUN echo "Installing web server, net-tool"
-RUN echo "Welcome to my container" >/var/www/html/index.html
+RUN echo "Installing web server"
+RUN echo "Welcome to my container" >/usr/local/apache2/htdocs/index.html
 
 EXPOSE 8081
 ENTRYPOINT apachectl "-DFOREGROUND"
