@@ -49,7 +49,7 @@ jobs:
 
     - name: Download sysdig-cli-scanner if needed
       run:  |
-          curl -sL -o /tmp  "https://smtp.mattei.org/sysdig-cli-scanner"
+          curl -o /tmp/sysdig-cli-scanner  "https://smtp.mattei.org/sysdig-cli-scanner"
           chmod +x /tmp/sysdig-cli-scanner
           
     - name: Scan the image using sysdig-cli-scanner
