@@ -63,26 +63,6 @@ jobs:
             --json-scan-result report.json \
               k8s-yellow-orange
 
-    - name: Scan the image using sysdig-cli-scanner
-      env:
-        SECURE_API_TOKEN: ${{ secrets.SECURE_API_TOKEN }}
-      run: |
-        /tmp/sysdig-cli-scanner \
-          --apiurl ${SYSDIG_SECURE_ENDPOINT} \
-          docker://ghcr.io/${{github.repository_owner}}/${IMAGE_NAME}:${IMAGE_TAG} \
-          --console-log \
-          --dbpath=${GITHUB_WORKSPACE}/cache/db/ \
-          --cachepath=${GITHUB_WORKSPACE}/cache/scanner-cache/
-
-    - name: Generate SARIF report
-      run: |
-          python3 /path/to/sysdig-to-sarif.py report.json > results.sarif
-
-    - name: Upload scan results to GitHub Security tab
-      uses: github/codeql-action/upload-sarif@v2
-      if: always()
-      with:
-          sarif_file: results.sarif
           
     #- name: Build the Docker image
     #  run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
