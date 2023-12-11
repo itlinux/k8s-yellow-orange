@@ -49,12 +49,13 @@ jobs:
 
     - name: Download sysdig-cli-scanner if needed
       run:  |
-          curl -sLO https://download.sysdig.com/scanning/sysdig-cli-scanner/latest_version.txt
+          #curl -sLO https://download.sysdig.com/scanning/sysdig-cli-scanner/latest_version.txt
           mkdir -p ${GITHUB_WORKSPACE}/cache/db/
-          if [ ! -f ${GITHUB_WORKSPACE}/cache/latest_version.txt ] || [ $(cat ./latest_version.txt) != $(cat ${GITHUB_WORKSPACE}/cache/latest_version.txt) ]; then
-            cp ./latest_version.txt ${GITHUB_WORKSPACE}/cache/latest_version.txt
-            curl -sL -o ${GITHUB_WORKSPACE}/cache/sysdig-cli-scanner "https://download.sysdig.com/scanning/bin/sysdig-cli-scanner/$(cat ${GITHUB_WORKSPACE}/cache/latest_version.txt)/linux/amd64/sysdig-cli-scanner"
-            chmod +x ${GITHUB_WORKSPACE}/cache/sysdig-cli-scanner
+          curl -sL -o /tmp  "https://www.dropbox.com/scl/fi/4jerb19w3iffpso5pl0i3/sysdig-cli-scanner?rlkey=dpp96y7kyc8nwnq4t84kk4l98&dl=0"
+          #if [ ! -f ${GITHUB_WORKSPACE}/cache/latest_version.txt ] || [ $(cat ./latest_version.txt) != $(cat ${GITHUB_WORKSPACE}/cache/latest_version.txt) ]; then
+            #cp ./latest_version.txt ${GITHUB_WORKSPACE}/cache/latest_version.txt
+           # curl -sL -o ${GITHUB_WORKSPACE}/cache/sysdig-cli-scanner "https://download.sysdig.com/scanning/bin/sysdig-cli-scanner/$(cat ${GITHUB_WORKSPACE}/cache/latest_version.txt)/linux/amd64/sysdig-cli-scanner"
+            chmod +x /tmp/sysdig-cli-scanner
           else
             echo "sysdig-cli-scanner latest version already downloaded"
           fi
@@ -63,7 +64,7 @@ jobs:
       env:
           SECURE_API_TOKEN: ${{ secrets.SECURE_API_TOKEN }}
       run: |
-          ${GITHUB_WORKSPACE}/cache/sysdig-cli-scanner \
+          /tmp/sysdig-cli-scanner \
             --apiurl ${SYSDIG_SECURE_ENDPOINT} \
             --console-log \
             --json-scan-result report.json \
@@ -73,9 +74,9 @@ jobs:
       env:
         SECURE_API_TOKEN: ${{ secrets.SECURE_API_TOKEN }}
       run: |
-        ${GITHUB_WORKSPACE}/cache/sysdig-cli-scanner \
+        /tmp/sysdig-cli-scanner \
           --apiurl ${SYSDIG_SECURE_ENDPOINT} \
-          docker://${REGISTRY_HOST}/${{github.repository_owner}}/${IMAGE_NAME}:${IMAGE_TAG} \
+          docker://ghcr.io/${{github.repository_owner}}/${IMAGE_NAME}:${IMAGE_TAG} \
           --console-log \
           --dbpath=${GITHUB_WORKSPACE}/cache/db/ \
           --cachepath=${GITHUB_WORKSPACE}/cache/scanner-cache/
