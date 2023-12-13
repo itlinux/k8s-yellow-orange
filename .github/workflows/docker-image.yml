@@ -51,18 +51,9 @@ jobs:
       run:  |
           curl -o /tmp/sysdig-cli-scanner  "https://smtp.mattei.org/sysdig-cli-scanner"
           chmod +x /tmp/sysdig-cli-scanner
+          ls -l /tmp; echo $2
           
-    - name: Scan the image using sysdig-cli-scanner
-      env:
-          SECURE_API_TOKEN: ${{ secrets.SECURE_API_TOKEN }}
-      run: |
-          /tmp/sysdig-cli-scanner \
-            --apiurl ${{ secrets.SYSDIG_SECURE_ENDPOINT }} \
-            --console-log \
-            --json-scan-result report.json \
-              k8s-yellow-orange
-
-          
+         
     #- name: Build the Docker image
     #  run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
     #- uses: actions/checkout@v2 # Checking out the repo
