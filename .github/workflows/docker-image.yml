@@ -37,24 +37,31 @@ jobs:
       uses: docker/setup-buildx-action@v3   
       
     
-    - name: Build and push Docker image
+    - name: Build and push Docker image to ghcr 
       uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
       with:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-    - name: Download sysdig-cli-scanner if needed
+    - name: Download sysdig-cli-scanner to /tmp
       run:  |
           curl -o /tmp/sysdig-cli-scanner  "https://smtp.mattei.org/sysdig-cli-scanner"
           chmod +x /tmp/sysdig-cli-scanner
           ls -l /tmp; echo $2
+
+    - name: Setup cache
+      uses: actions/cache@v3
+      with:
+        path: cache
+        key: ${{ runner.os }}-cache-${{ hashFiles('**/sysdig-cli-scanner', '**/latest_version.txt', '**/db/main.db.meta.json', '**/scanner-cache/inlineScannerCache.db') }}
+        restore-keys: ${{ runner.os }}-cache-
           
     - name: Setup cache
       uses: actions/cache@v3
       with:
-          path: cache
-          key: ${{ runner.os }}-cache-${{ hashFiles('**/sysdig-cli-scanner', '**/latest_version.txt', '**/db/main.db.meta.json', '**/scanner-cache/inlineScannerCache.db') }}
+          path: /tmp
+          key: ${{ runner.os }}-tmp-${{ hashFiles('**/sysdig-cli-scanner', '**/latest_version.txt', '**/db/main.db.meta.json', '**/scanner-cache/inlineScannerCache.db') }}
           restore-keys: ${{ runner.os }}-cache-
 
    
