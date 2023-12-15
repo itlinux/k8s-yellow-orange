@@ -8,5 +8,8 @@ RUN apt install -y apache2
 RUN echo "Installing web server"
 RUN echo "Welcome to my container" >/var/www/html/index.html
 
-EXPOSE 8081
 ENTRYPOINT apachectl "-DFOREGROUND"
+
+EXPOSE 80
+HEALTHCHECK --interval=5m --timeout=3s \
+  CMD curl -f http://localhost/ || exit 1
