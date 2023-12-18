@@ -31,12 +31,12 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           #images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          images: ${{ env.REGISTRY }}/pradumnasaraf/hello-world
+          images: ${{ env.REGISTRY }}/itlinux/yellow-orange:latest
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
           context: .
           push: true
           # tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: ${{ env.REGISTRY }}/pradumnasaraf/hello-world:latest
+          tags: ${{ env.REGISTRY }}/itlinux/yellow-orange:latest
           labels: ${{ steps.meta.outputs.labels }}
